@@ -1,0 +1,11 @@
+{
+    "expressErrorHandling": false,
+    "development": {
+        "port": 3000,
+        "store": {
+            "adapter": "mongodb",
+            "url": "mongodb+srv://admin:123321@cluster0.8v4ea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+            "collection": "AddonSettings"
+        }
+    }
+}
