@@ -1,5 +1,6 @@
-const fs = require("fs")
-
+const fs = require("fs");
+const storeGetter  = require('../midlewares/getStore');
+const webApi = require('../helpers/webApi');
 module.exports = function (app, addon) {
 
     //fires after addon installation
@@ -19,11 +20,6 @@ module.exports = function (app, addon) {
             }
         });
     });
-    // TO DO delete this midleware
-    app.use((req, res, next) => {
-        console.log('we are here mother-father');
-        next();
-    })
 
     app.get('/', function (req, res) {
         res.format({
@@ -36,10 +32,9 @@ module.exports = function (app, addon) {
         });
     });
 
-
     app.get('/main-page', addon.authenticate(), async function (req, res) {
-        console.log(req);
-        res.render("main-page")
+        const result = await webApi.getALlIssues();
+        res.render("main-page", { store: req.context});
     });
 
     app.post('/main-page', addon.checkValidToken(), async function (req, res) {
