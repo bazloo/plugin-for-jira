@@ -1,6 +1,6 @@
 const fs = require("fs");
-const storeGetter  = require('../midlewares/getStore');
 const webApi = require('../helpers/webApi');
+const transformData = require('../services/dataTransformer');
 module.exports = function (app, addon) {
 
     //fires after addon installation
@@ -33,7 +33,12 @@ module.exports = function (app, addon) {
     });
 
     app.get('/main-page', addon.authenticate(), async function (req, res) {
-        const result = await webApi.getALlIssues();
+        const issues = await webApi.getALlIssues();
+        const transformedIssues = await transformData.issuesDataTransformer(issues);
+        const filters = await webApi.getALlFilters();
+        const transformedFilters = await transformData.filtersDataTransformer(filters);
+        console.log(transformedIssues);
+        console.log(transformedFilters);
         res.render("main-page", { store: req.context});
     });
 
