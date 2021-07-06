@@ -1,6 +1,6 @@
 const fs = require("fs");
 const webApi = require('../helpers/webApi');
-const transformData = require('../services/dataTransformer');
+const transformData = require('../helpers/dataTransformer');
 module.exports = function (app, addon) {
 
     //fires after addon installation
@@ -33,15 +33,18 @@ module.exports = function (app, addon) {
     });
 
     app.get('/main-page', addon.authenticate(), async function (req, res) {
-        const issues = await webApi.getALlIssues();
-        const transformedIssues = await transformData.issuesDataTransformer(issues);
-        const filters = await webApi.getALlFilters();
-        const transformedFilters = await transformData.filtersDataTransformer(filters);
-        console.log(transformedIssues);
-        console.log(transformedFilters);
-        res.render("main-page", { store: req.context});
+        res.render("main-page", { transformedIssues, transformedFilters});
     });
-
+    app.get('/get-state', async function (req, res) {
+        const issues = await webApi.getALlIssues();
+        const preparedIssues = await transformData.issuesDataTransformer(issues);
+        const filters = await webApi.getALlFilters();
+        const preparedFilters = await transformData.filtersDataTransformer(filters);
+        res.send({
+            issues: preparedIssues,
+            filters: preparedFilters
+        });
+    });
     app.post('/main-page', addon.checkValidToken(), async function (req, res) {
 
     });

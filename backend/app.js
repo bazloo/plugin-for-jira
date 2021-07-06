@@ -29,7 +29,7 @@ const MONGODB_URL = development.store.url.replace('password', process.env.DB_PAS
 // console.log(addon.config.store);
 app.use(bodyParser.json(/*{limit: '50mb', extended: true}*/));
 app.use(bodyParser.urlencoded({/*limit: '50mb',*/ extended: true}));
-app.use(cors({ credentials: true, origin: "http://upd-Beast:3000" }));
+app.use(cors({ origin: true }));
 
 app.use(cookieParser());
 var MemoryStore = session.MemoryStore;

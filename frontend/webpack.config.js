@@ -14,7 +14,7 @@ module.exports = {
     },
     watch: (process.argv.indexOf('--no-watch') > -1) ? false : true,
     entry: {
-        'main.page': path.resolve('./src/mainPage.tsx'),
+        'main.page': path.resolve('./src/components/table.jsx'),
 
     },
     output: {

@@ -7,7 +7,7 @@
     "name": "SaaSJet",
     "url": "https://saasjet.com"
   },
-  "baseUrl": "https://a728e219aa0d.ngrok.io", /** <=== INSERT YOUR HEROKU APP URL. Delete this comment */
+  "baseUrl": "https://1fdfc97b5dc5.ngrok.io", /** <=== INSERT YOUR HEROKU APP URL. Delete this comment */
   "links": {
     "self": "https://smth.ngrok.com/atlassian-connect.json",
     "homepage": "https://smth.ngrok.com/atlassian-connect.json"
