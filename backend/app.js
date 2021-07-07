@@ -3,7 +3,6 @@
 
 // [Express](http://expressjs.com/) is your friend -- it's the underlying
 // web framework that `atlassian-connect-express` uses
-let store;
 var express = require('express');
 var session = require("express-session");
 var bodyParser = require('body-parser');
@@ -56,7 +55,7 @@ global.databaseName = "myFirstDatabase";
 global.JiraAccountInfoStore = "jira";
 
 async function getdb() {
-    global.connection = await MongoClient.connect(MONGODB_URL, {useNewUrlParser: true,  useUnifiedTopology: true })
+    global.connection = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
     global.database = await global.connection.db(global.databaseName);
 
 
@@ -135,4 +134,3 @@ async function getdb() {
         if (devEnv) addon.register();
     });
 }
-module.exports = { store };

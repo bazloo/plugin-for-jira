@@ -33,8 +33,13 @@ module.exports = function (app, addon) {
     });
 
     app.get('/main-page', addon.authenticate(), async function (req, res) {
-        res.render("main-page", { transformedIssues, transformedFilters});
+        res.render("main-page");
     });
+
+    
+    // to prevent problems with CORS, i've made my own routs for fetching jira-api
+    // behalf of this addon
+
     app.get('/get-state', async function (req, res) {
         const issues = await webApi.getALlIssues();
         const preparedIssues = await transformData.issuesDataTransformer(issues);
@@ -43,6 +48,14 @@ module.exports = function (app, addon) {
         res.send({
             issues: preparedIssues,
             filters: preparedFilters
+        });
+    });
+    app.post('/get-state-filtered', async function (req, res) {
+        console.log(req.body);
+        const issues = await webApi.getDataWithJql(req.body);
+        const preparedIssues = await transformData.issuesDataTransformer(issues);
+        res.send({
+            issues: preparedIssues,
         });
     });
     app.post('/main-page', addon.checkValidToken(), async function (req, res) {

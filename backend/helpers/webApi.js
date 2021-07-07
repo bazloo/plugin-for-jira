@@ -25,8 +25,9 @@ async function getALlFilters() {
 }
 
 async function getDataWithJql(jql){
-    const result = await axios(setOptions('post','search', jql));
-    return result.data;
+    console.log(jql);
+    const result = await axios(setOptions('post','/search', jql));
+    return result.data.issues;
 }
 
 module.exports = {

@@ -8,13 +8,13 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
-            }
+            },
 
         ],
     },
     watch: (process.argv.indexOf('--no-watch') > -1) ? false : true,
     entry: {
-        'main.page': path.resolve('./src/components/table.jsx'),
+        'main.page': path.resolve('./app.js'),
 
     },
     output: {
