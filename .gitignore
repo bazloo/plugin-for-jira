@@ -3,7 +3,7 @@
 .idea/
 .DS_Store
 node_modules/
-.env
+backend/.env
 *.pem
 *.pem
 *.crt

@@ -8,7 +8,7 @@ var session = require("express-session");
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var app = express();
-
+const cors = require('cors');
 // You need to load `atlassian-connect-express` to use her godly powers
 var ac = require('atlassian-connect-express');
 
@@ -16,18 +16,19 @@ var ac = require('atlassian-connect-express');
 var addon = ac(app);
 
 // // add environment variables
-// const path = require('path');
-// const dotenv = require('dotenv');
-// dotenv.config({
-//     path: path.join(__dirname, './.env')
-// });
-// const { development } = require('./config.json');
-// const MONGODB_URL = development.store.url.replace('password', process.env.DB_PASSWORD);
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({
+    path: path.join(__dirname, './.env')
+});
+const { development } = require('./config.json');
+const MONGODB_URL = development.store.url.replace('password', process.env.DB_PASSWORD);
 // development.store.url = MONGODB_URL;
 // addon.config.store = development.store;
 // console.log(addon.config.store);
 app.use(bodyParser.json(/*{limit: '50mb', extended: true}*/));
 app.use(bodyParser.urlencoded({/*limit: '50mb',*/ extended: true}));
+app.use(cors({ origin: true }));
 
 app.use(cookieParser());
 var MemoryStore = session.MemoryStore;
@@ -54,7 +55,7 @@ global.databaseName = "myFirstDatabase";
 global.JiraAccountInfoStore = "jira";
 
 async function getdb() {
-    global.connection = await MongoClient.connect(MONGODB_URL, {useNewUrlParser: true})
+    global.connection = await MongoClient.connect(MONGODB_URL, { useNewUrlParser: true,  useUnifiedTopology: true })
     global.database = await global.connection.db(global.databaseName);
 
 

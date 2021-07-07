@@ -1,5 +1,6 @@
-const fs = require("fs")
-
+const fs = require("fs");
+const webApi = require('../helpers/webApi');
+const transformData = require('../helpers/dataTransformer');
 module.exports = function (app, addon) {
 
     //fires after addon installation
@@ -19,11 +20,6 @@ module.exports = function (app, addon) {
             }
         });
     });
-    // TO DO delete this midleware
-    app.use((req, res, next) => {
-        console.log('we are here mother-father');
-        next();
-    })
 
     app.get('/', function (req, res) {
         res.format({
@@ -36,12 +32,32 @@ module.exports = function (app, addon) {
         });
     });
 
-
     app.get('/main-page', addon.authenticate(), async function (req, res) {
-        console.log(req);
-        res.render("main-page")
+        res.render("main-page");
     });
 
+    
+    // to prevent problems with CORS, i've made my own routs for fetching jira-api
+    // behalf of this addon
+
+    app.get('/get-state', async function (req, res) {
+        const issues = await webApi.getALlIssues();
+        const preparedIssues = await transformData.issuesDataTransformer(issues);
+        const filters = await webApi.getALlFilters();
+        const preparedFilters = await transformData.filtersDataTransformer(filters);
+        res.send({
+            issues: preparedIssues,
+            filters: preparedFilters
+        });
+    });
+    app.post('/get-state-filtered', async function (req, res) {
+        console.log(req.body);
+        const issues = await webApi.getDataWithJql(req.body);
+        const preparedIssues = await transformData.issuesDataTransformer(issues);
+        res.send({
+            issues: preparedIssues,
+        });
+    });
     app.post('/main-page', addon.checkValidToken(), async function (req, res) {
 
     });
